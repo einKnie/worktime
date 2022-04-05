@@ -114,6 +114,11 @@ while read -r line; do
                 timestr="$part"
                 ;;
             [MTWFS]??)
+                # date is english
+                day="$part"
+                ;;
+            [MDFS]?)
+                # date is german
                 day="$part"
                 ;;
             *)
@@ -127,7 +132,8 @@ while read -r line; do
 
         # rotate log on month change
         # do this first so we don't add today's time to last month's timesheet
-        month="${datestr:3:2}"
+        month="$(echo "$datestr" | awk -F- '{print $2}')"
+        year="$(echo "$datestr" | awk -F- '{print $1}')"
 
         if [ -z "$month_last" ]; then
             month_last="$month"
